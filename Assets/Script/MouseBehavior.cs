@@ -48,6 +48,7 @@ public class MouseBehavior : MonoBehaviour
                 
                 selection.GetComponent<BasicObject>().SetUnselected();
                 selection=null;
+                return;
             }
             var mouse_position = _GetMouseWorldPosition();
             mouse_offset = selection.position - mouse_position;
