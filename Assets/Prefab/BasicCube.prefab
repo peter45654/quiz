@@ -118,6 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d76aa3ce50df05449cdfd1f85d61d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  performType: 0
   onHover_material: {fileID: 2100000, guid: eb429a3e4f57f834987b81de6842d74a, type: 2}
   highlight_material: {fileID: 2100000, guid: 34c66c66a270fa74787aab0be0ceb5c9, type: 2}
-  original_material: {fileID: 2100000, guid: 38c7d18ea13939343b10cd3eecff3cb2, type: 2}
+  substract_material: {fileID: 2100000, guid: 38c7d18ea13939343b10cd3eecff3cb2, type: 2}
+  union_material: {fileID: 2100000, guid: 3de05e26fbb08de43a27c6a90d2a057c, type: 2}
