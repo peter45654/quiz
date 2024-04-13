@@ -17,7 +17,7 @@ public class PreviewSystem : MonoBehaviour
         if (_previewSystem == null) _previewSystem = this;
         Setup();
     }
-    public void UpdateReult()
+    public void UpdateResult()
     {
 
         if (preview_object) Destroy(preview_object);

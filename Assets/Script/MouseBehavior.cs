@@ -44,7 +44,7 @@ public class MouseBehavior : MonoBehaviour
         {
             isMouse_hold = false;
             _ClearSelection();
-            PreviewSystem.Instance.UpdateReult();
+            PreviewSystem.Instance.UpdateResult();
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -66,7 +66,7 @@ public class MouseBehavior : MonoBehaviour
             if (onHover_obj == null || selection == null) return;
             var mouse_position = _GetMouseWorldPosition();
             selection.position = mouse_position + mouse_offset;
-            PreviewSystem.Instance.UpdateReult();
+            PreviewSystem.Instance.UpdateResult();
         }
 
 
