@@ -32,14 +32,14 @@ public class MouseBehavior : MonoBehaviour
                 selection = onHover_basic_obj.transform;
             }
         }
-        if (Input.GetMouseButtonDown(1))//unselect obj
-        {
-            if (onHover_obj)
-            {
-                var onHover_basic_obj = onHover_obj.GetComponent<BasicObject>();
-                onHover_basic_obj.SetUnselected();
-            }
-        }
+        // if (Input.GetMouseButtonDown(1))//unselect 
+        // {
+        //     if (onHover_obj)
+        //     {
+        //         var onHover_basic_obj = onHover_obj.GetComponent<BasicObject>();
+        //         onHover_basic_obj.SetUnselected();
+        //     }
+        // }
         if (Input.GetMouseButtonUp(0)) isMouse_hold = false;
         if (Input.GetMouseButtonDown(0))
         {
