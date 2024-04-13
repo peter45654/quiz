@@ -57,7 +57,7 @@ public class MouseBehavior : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             isMouse_hold = true;
-            if (onHover_obj == null) return;
+            if (onHover_obj == null||selection==null) return;
             var mouse_position = _GetMouseWorldPosition();
             selection.position=mouse_position + mouse_offset;
         }
