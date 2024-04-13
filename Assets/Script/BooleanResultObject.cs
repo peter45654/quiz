@@ -1,18 +1,24 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+
+using Parabox.CSG;
 
 public class BooleanResultObject : BasicObject
 {
+    public List<BasicObject> boolean_obj_pool;
     public bool isNeed_update { get => _isNeed_update; }
     private bool _isNeed_update = false;
-    public List<BasicObject> boolean_obj_pool;
+    private Mesh original_mesh;
+
+    private MeshFilter meshFilter;
     // Start is called before the first frame update
     void Start()
     {
+
         meshRenderer = GetComponent<MeshRenderer>();
         boolean_obj_pool = new List<BasicObject>();
+        meshFilter = GetComponent<MeshFilter>();
+        original_mesh = meshFilter.mesh;
         SetUnselected();
         SetUnHover();
     }
@@ -20,12 +26,20 @@ public class BooleanResultObject : BasicObject
     // Update is called once per frame
     void Update()
     {
-
+        if (_isNeed_update == false) return;
+        UpdateMesh();
+        _isNeed_update = false;
     }
-    void FixedUpdate()
+    void UpdateMesh()
     {
-
-
+        meshFilter.sharedMesh = original_mesh;
+        Model result = null;
+        foreach (var item in boolean_obj_pool)
+        {
+            var obj = item.gameObject;
+            result = CSG.Subtract(gameObject, obj);
+        }
+        if (result != null) meshFilter.sharedMesh = result.mesh;
     }
     public void SetIsNeedUpdate()
     {
@@ -33,7 +47,6 @@ public class BooleanResultObject : BasicObject
     }
     void OnTriggerEnter(Collider other)
     {
-        print("OnTriggerEnter " + other.gameObject.name);
         _isNeed_update = true;
         var basic_obj = other.gameObject.GetComponent<BasicObject>();
         if (basic_obj &&
@@ -42,7 +55,6 @@ public class BooleanResultObject : BasicObject
     }
     void OnTriggerExit(Collider other)
     {
-        print("OnTriggerExit " + other.gameObject.name);
         _isNeed_update = true;
         var basic_obj = other.gameObject.GetComponent<BasicObject>();
         boolean_obj_pool.Remove(basic_obj);
