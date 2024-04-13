@@ -40,12 +40,14 @@ public class MouseBehavior : MonoBehaviour
                 onHover_basic_obj.SetUnselected();
             }
         }
+        if (Input.GetMouseButtonUp(0)) isMouse_hold = false;
         if (Input.GetMouseButtonDown(0))
         {
+            if(selection==null)return;
             if (onHover_obj == null) {
+                
                 selection.GetComponent<BasicObject>().SetUnselected();
                 selection=null;
-                return;
             }
             var mouse_position = _GetMouseWorldPosition();
             mouse_offset = selection.position - mouse_position;
@@ -59,7 +61,7 @@ public class MouseBehavior : MonoBehaviour
             selection.position=mouse_position + mouse_offset;
         }
 
-        if (Input.GetMouseButtonUp(0)) isMouse_hold = false;
+        
     }
     Vector3 _GetMouseWorldPosition()
     {
