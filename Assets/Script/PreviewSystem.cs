@@ -9,13 +9,12 @@ public class PreviewSystem : MonoBehaviour
     public List<GameObject> union_objects;
     public List<GameObject> substract_objects;
     public GameObject preview_object;
-    public Material[] preview_materials;
-
-    static public PreviewSystem Instance{get =>_previewSystem;}
+    public Material preview_material;
+    static public PreviewSystem Instance { get => _previewSystem; }
     private static PreviewSystem _previewSystem;
     void Start()
     {
-        if(_previewSystem==null)_previewSystem=this;
+        if (_previewSystem == null) _previewSystem = this;
         Setup();
     }
     public void UpdateReult()
@@ -25,19 +24,23 @@ public class PreviewSystem : MonoBehaviour
         Model result = CSG.Union(union_objects[0], union_objects[1]);
         preview_object = new GameObject();
         preview_object.AddComponent<MeshFilter>().sharedMesh = result.mesh;
-        preview_object.AddComponent<MeshRenderer>().sharedMaterials = preview_materials;
-     
+        preview_object.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
+        
+
         result = CSG.Subtract(preview_object, substract_objects[0]);
         Destroy(preview_object);
         preview_object = new GameObject();
         preview_object.AddComponent<MeshFilter>().sharedMesh = result.mesh;
-        preview_object.AddComponent<MeshRenderer>().sharedMaterials =preview_materials;
+        preview_object.AddComponent<MeshRenderer>().sharedMaterials =result.materials.ToArray();
+        
 
         result = CSG.Subtract(preview_object, substract_objects[1]);
         Destroy(preview_object);
         preview_object = new GameObject();
         preview_object.AddComponent<MeshFilter>().sharedMesh = result.mesh;
-        preview_object.AddComponent<MeshRenderer>().sharedMaterials = preview_materials;
+        preview_object.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
+        
+        preview_object.GetComponent<MeshRenderer>().material=preview_material;
 
     }
     public void Setup()
