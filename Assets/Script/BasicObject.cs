@@ -13,7 +13,7 @@ public class BasicObject : MonoBehaviour
     private Material normal_material;
     public MeshRenderer meshRenderer { get => _meshRenderer; set => _meshRenderer = value; }
     private MeshRenderer _meshRenderer;
-    void Start()
+    void Awake()
     {
         _meshRenderer = GetComponent<MeshRenderer>();
         if (performType.Equals(PerformType.Substract))
