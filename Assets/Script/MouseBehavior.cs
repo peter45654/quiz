@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,17 +6,12 @@ public class MouseBehavior : MonoBehaviour
 {
     private Vector3 mouse_offset = Vector3.zero;
     private float mouse_z_coordinate = 0;
-    private List<Transform> selection_pool;
-    private List<Vector3> selection_mouse_offset_pool;
+    private Transform selection;
     private Transform onHover_obj;
     private RaycastHit raycastHit;
     private bool isMouse_hold = false;
 
-    void Start()
-    {
-        selection_mouse_offset_pool = new List<Vector3>();
-        selection_pool = new List<Transform>();
-    }
+
     void FixedUpdate()
     {
         _ObjectDetect();
@@ -31,8 +24,12 @@ public class MouseBehavior : MonoBehaviour
             if (onHover_obj)
             {
                 var onHover_basic_obj = onHover_obj.GetComponent<BasicObject>();
+                if (selection != null)
+                {
+                    if (onHover_obj != selection) selection.GetComponent<BasicObject>().SetUnselected();
+                }
                 onHover_basic_obj.SetSelected();
-                if (!selection_pool.Contains(onHover_basic_obj.transform)) selection_pool.Add(onHover_basic_obj.transform);
+                selection = onHover_basic_obj.transform;
             }
         }
         if (Input.GetMouseButtonDown(1))//unselect obj
@@ -41,31 +38,25 @@ public class MouseBehavior : MonoBehaviour
             {
                 var onHover_basic_obj = onHover_obj.GetComponent<BasicObject>();
                 onHover_basic_obj.SetUnselected();
-                selection_pool.Remove(onHover_basic_obj.transform);
             }
         }
         if (Input.GetMouseButtonDown(0))
         {
-            selection_mouse_offset_pool.Clear();
-            var mouse_position = _GetMouseWorldPosition();
-            foreach (Transform item in selection_pool)
-            {
-                var mouse_offset = item.position - mouse_position;
-                item.transform.position = mouse_position + mouse_offset;
-                selection_mouse_offset_pool.Add(mouse_offset);
+            if (onHover_obj == null) {
+                selection.GetComponent<BasicObject>().SetUnselected();
+                selection=null;
+                return;
             }
+            var mouse_position = _GetMouseWorldPosition();
+            mouse_offset = selection.position - mouse_position;
+
         }
         if (Input.GetMouseButton(0))
         {
             isMouse_hold = true;
             if (onHover_obj == null) return;
             var mouse_position = _GetMouseWorldPosition();
-            for (int i = 0; i < selection_pool.Count; i++)
-            {
-                mouse_offset = selection_mouse_offset_pool[i];
-                var item = selection_pool[i];
-                item.transform.position = mouse_position + mouse_offset;
-            }
+            selection.position=mouse_position + mouse_offset;
         }
 
         if (Input.GetMouseButtonUp(0)) isMouse_hold = false;
