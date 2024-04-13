@@ -40,14 +40,20 @@ public class MouseBehavior : MonoBehaviour
         //         onHover_basic_obj.SetUnselected();
         //     }
         // }
-        if (Input.GetMouseButtonUp(0)) isMouse_hold = false;
+        if (Input.GetMouseButtonUp(0))
+        {
+            isMouse_hold = false;
+            _ClearSelection();
+            PreviewSystem.Instance.UpdateReult();
+        }
         if (Input.GetMouseButtonDown(0))
         {
-            if(selection==null)return;
-            if (onHover_obj == null) {
-                
+            if (selection == null) return;
+            if (onHover_obj == null)
+            {
+
                 selection.GetComponent<BasicObject>().SetUnselected();
-                selection=null;
+                selection = null;
                 return;
             }
             var mouse_position = _GetMouseWorldPosition();
@@ -57,12 +63,13 @@ public class MouseBehavior : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             isMouse_hold = true;
-            if (onHover_obj == null||selection==null) return;
+            if (onHover_obj == null || selection == null) return;
             var mouse_position = _GetMouseWorldPosition();
-            selection.position=mouse_position + mouse_offset;
+            selection.position = mouse_position + mouse_offset;
+            PreviewSystem.Instance.UpdateReult();
         }
 
-        
+
     }
     Vector3 _GetMouseWorldPosition()
     {
@@ -72,6 +79,13 @@ public class MouseBehavior : MonoBehaviour
         Vector3 mouse_point = Input.mousePosition;
         mouse_point.z = mouse_z_coordinate;
         return Camera.main.ScreenToWorldPoint(mouse_point);
+    }
+    void _ClearSelection()
+    {
+        if (selection == null) return;
+        selection.GetComponent<BasicObject>().SetUnselected();
+        selection = null;
+        return;
     }
     void _ObjectDetect()
     {

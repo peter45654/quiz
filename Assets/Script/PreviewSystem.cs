@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 using Parabox.CSG;
+using Unity.VisualScripting;
 public class PreviewSystem : MonoBehaviour
 {
     public List<GameObject> union_objects;
@@ -10,34 +11,27 @@ public class PreviewSystem : MonoBehaviour
     public GameObject preview_object;
     public Material[] preview_materials;
 
+    static public PreviewSystem Instance{get =>_previewSystem;}
+    private static PreviewSystem _previewSystem;
     void Start()
     {
-        union_objects = new List<GameObject>();
-        substract_objects = new List<GameObject>();
-
-        union_objects = GameObject.FindGameObjectsWithTag("Union").ToList();
-        substract_objects = GameObject.FindGameObjectsWithTag("Substract").ToList();
+        if(_previewSystem==null)_previewSystem=this;
+        Setup();
     }
-
-
-    void Update()
+    public void UpdateReult()
     {
-        if (Input.GetMouseButtonUp(0)) UpdateReult();
-        if (Input.GetMouseButton(0)) UpdateReult();
-    }
-    void UpdateReult()
-    {
+
         if (preview_object) Destroy(preview_object);
         Model result = CSG.Union(union_objects[0], union_objects[1]);
         preview_object = new GameObject();
         preview_object.AddComponent<MeshFilter>().sharedMesh = result.mesh;
-        preview_object.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
-
+        preview_object.AddComponent<MeshRenderer>().sharedMaterials = preview_materials;
+     
         result = CSG.Subtract(preview_object, substract_objects[0]);
         Destroy(preview_object);
         preview_object = new GameObject();
         preview_object.AddComponent<MeshFilter>().sharedMesh = result.mesh;
-        preview_object.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
+        preview_object.AddComponent<MeshRenderer>().sharedMaterials =preview_materials;
 
         result = CSG.Subtract(preview_object, substract_objects[1]);
         Destroy(preview_object);
@@ -45,5 +39,13 @@ public class PreviewSystem : MonoBehaviour
         preview_object.AddComponent<MeshFilter>().sharedMesh = result.mesh;
         preview_object.AddComponent<MeshRenderer>().sharedMaterials = preview_materials;
 
+    }
+    public void Setup()
+    {
+        union_objects = new List<GameObject>();
+        substract_objects = new List<GameObject>();
+
+        union_objects = GameObject.FindGameObjectsWithTag("Union").ToList();
+        substract_objects = GameObject.FindGameObjectsWithTag("Substract").ToList();
     }
 }
