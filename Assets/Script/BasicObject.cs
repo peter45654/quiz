@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class BasicObject : MonoBehaviour
 {
@@ -11,6 +7,7 @@ public class BasicObject : MonoBehaviour
     public Material original_material;
     public bool isSelected { get => _isSelected; }
     private bool _isSelected = false;
+    public MeshRenderer meshRenderer{get=>_meshRenderer;set =>_meshRenderer=value;}
     private MeshRenderer _meshRenderer;
     void Start()
     {
